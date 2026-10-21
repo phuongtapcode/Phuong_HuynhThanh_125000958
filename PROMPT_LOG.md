@@ -1,13 +1,13 @@
 # NHẬT KÝ PROMPT ENGINEERING (VIBE CODING LOG)
 
-- **Họ và tên:** [Sinh viên xác nhận và điền chính xác trước khi nộp]
-- **MSSV:** [Sinh viên xác nhận và điền chính xác trước khi nộp]
+- **Họ và tên:** Huỳnh Thanh Phương
+- **MSSV:** 125000958
 - **Tên đề tài Website:** KAZE — Đến Nhật Bản, chạm vào những điều dịu dàng
-- **Công cụ AI đã sử dụng:** ChatGPT (GPT-6), công cụ tạo ảnh AI
+- **Công cụ AI đã sử dụng (sinh viên cung cấp):** Codex 6.1 Sol
 - **Công cụ kiểm tra:** Chromium và Playwright (môi trường giả lập viewport)
 - **Ngày thực hiện:** 21/10/2026
 
-> **Lưu ý tính trung thực:** Các đoạn trong dấu ngoặc kép dưới đây ghi lại yêu cầu người dùng đã thực sự gửi; phần “prompt kỹ thuật” là chỉ dẫn triển khai được tổng hợp lại cho dễ theo dõi, không phải lời nguyên văn của sinh viên. Không ghi Antigravity hoặc Chrome DevTools MCP là “đã dùng” khi chưa trực tiếp kết nối với chúng. Các bước đẩy GitHub, đo PSI và sử dụng điện thoại thật chưa được xác nhận.
+> **Lưu ý tính trung thực:** Các đoạn trong dấu ngoặc kép dưới đây ghi lại yêu cầu người dùng đã thực sự gửi; phần “prompt kỹ thuật” là chỉ dẫn triển khai được tổng hợp lại cho dễ theo dõi, không phải lời nguyên văn của sinh viên. Không ghi Antigravity hoặc Chrome DevTools MCP là “đã dùng” khi chưa trực tiếp kết nối với chúng. Repository GitHub đã được cập nhật trong các vòng làm việc; việc đo PageSpeed Insights và kiểm thử trên thiết bị Android/iOS thật chưa được xác nhận.
 
 ## 1. Yêu cầu ban đầu (System/Initial Prompt)
 
@@ -69,7 +69,7 @@
 
 **Kiểm tra:** Chạy Chromium/Playwright với nội dung HTML, CSS và ảnh nội bộ được nạp trong bộ nhớ tại 20 độ rộng viewport từ 320px đến 2560px do môi trường hạn chế điều hướng địa chỉ `file://` và `localhost`. Không ghi nhận tràn ngang của trang, tràn phần tử heading hoặc lỗi JavaScript trong lượt kiểm tra. Đã đối chiếu ảnh render hero và mục Trải nghiệm ở 320/390/768/1440px. Đây **không phải** kiểm thử thực tế trên Windows hay kết quả PageSpeed Insights từ URL công khai; người dùng cần giải nén toàn bộ ZIP và kiểm tra trên Chrome Windows trước khi nộp.
 
-### Lần 7 — Loại bỏ mã JavaScript tự viết, chuyển điều khiển sang HTML/CSS
+### Lần 6 — Loại bỏ mã JavaScript tự viết, chuyển điều khiển sang HTML/CSS
 
 **Yêu cầu thật:** “Hãy làm làm đi đề k yêu cầu dùng js đâu hãy bỏ đi”.
 
@@ -83,4 +83,17 @@
 
 **Bài học khi viết prompt:** “Thiết kế đẹp” là yêu cầu quá chung chung. Cần chỉ rõ những điều không được phép (ảnh từ xa hỏng, khối vuông lặp lại, mobile kéo quá dài), tiêu chí có thể kiểm tra (ảnh tải thành công, không tràn ngang, tương tác thật), giới hạn công nghệ và chất lượng trải nghiệm. Điều khiển AI là quá trình nhiều lượt thử–nhận xét–sửa, không phải chỉ một prompt duy nhất.
 
-**Cần tự kiểm tra trước khi nộp:** Tên và MSSV, tên GitHub repo đúng cú pháp, commit thật, GitHub Pages hoạt động, AOS/Animate.css tải thành công qua mạng và PageSpeed Insights trên URL public. Không ghi các việc này là “đã đạt” khi chưa hoàn thành.
+**Cần tự kiểm tra trước khi nộp:** Nội dung và đường dẫn GitHub Pages đã được triển khai đúng phiên bản mới nhất, Animate.css/AOS tải thành công qua mạng và PageSpeed Insights trên URL công khai. Không tự ghi “đạt 90+” khi chưa đo thực tế.
+
+
+### Lần 7 — Đồng bộ hình dạng 3 thẻ điểm đến và cập nhật thông tin nộp bài (21/10/2026)
+
+**Yêu cầu thật của sinh viên:** “Sửa file prompt engineering thành tên Huỳnh Thanh Phương MSsv là 125000958 công cụ ai dùng là codex 6.1 sol ... sửa luôn 3 ảnh giống ảnh ở giữa ... xem điện thoại sẽ hợp lí hơn ... đưa lên repo đó commit đúng”.
+
+**Phân tích:** Ba thẻ trong phần The Places dùng ba công thức `border-radius` khác nhau và cố tình so le chiều cao; hiệu ứng hover còn thay công thức bo góc. Kết quả là đầu vòm, cạnh trái/phải và đường chân ảnh thiếu đồng nhất ở một số kích thước màn hình.
+
+**Cách sửa:** Áp dụng duy nhất một công thức bo góc đối xứng cho cả ba ảnh, theo phong cách mái vòm của thẻ giữa; bỏ hai quy tắc ghi đè riêng, bỏ độ lệch dọc, đồng thời xóa ba huy hiệu số nằm trong khung ảnh để không bị đường cong cắt mất; giữ nguyên `overflow-x` và `scroll-snap` cho mobile. Khi hover chỉ dịch chuyển nhẹ và phóng ảnh, không đổi viền bo. Không thêm JavaScript hay tài nguyên mới.
+
+**Thông tin nộp bài:** Họ tên, MSSV và công cụ AI được điền theo thông tin sinh viên trực tiếp cung cấp; lịch sử lời nhắc và kiểm thử được giữ theo các giai đoạn thực tế đã diễn ra.
+
+**Nghiệm thu:** Dùng Chromium/Playwright kiểm tra 13 độ rộng viewport từ 320px đến 2560px. Cả ba thẻ có cùng `border-radius`, cùng chiều cao, cả ba ảnh đều tải được và không có tràn ngang; ở 390px dải ảnh vuốt ngang được; hover không đổi kiểu bo góc. Không ghi nhận lỗi JavaScript trong lượt kiểm thử giả lập. Kết quả không thay thế kiểm thử thiết bị thật hay PageSpeed Insights.
