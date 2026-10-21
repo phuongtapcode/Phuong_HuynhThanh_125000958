@@ -60,3 +60,67 @@ body:has(.menu:target){overflow:hidden}
 .day-picker label{width:69px;height:69px;font-size:27px}
 }
 @media(prefers-reduced-motion:reduce){.experience-tab,.day-picker label{transition:none}}
+
+
+/* 21/10/2026 - Mobile viewport stability and accessible three-way selection.
+   At 650px and below no component may extend beyond its content column. */
+html{max-width:100%;overflow-x:clip}
+body{max-width:100%;overflow-x:clip}
+@media(max-width:650px){
+  :root{--space:clamp(16px,5vw,22px)}
+  .shell{width:calc(100% - 2 * var(--space));max-width:100%;margin-inline:auto}
+  .nav{width:calc(100% - 2 * var(--space));min-width:0;gap:10px}
+  .brand{min-width:0}
+  .brand-main{font-size:clamp(23px,6.9vw,28px)}
+  .nav-action{margin-left:auto;flex-shrink:0}
+  .menu-toggle{flex-shrink:0}
+  .hero{padding-top:110px;overflow-x:clip}
+  .hero-layout{display:flex;flex-direction:column;align-items:stretch;min-height:0;width:calc(100% - 2 * var(--space))}
+  /* Keep copy inside one real block, avoiding display:contents layout glitches. */
+  .hero-copy{display:block;order:0;padding:10px 0 0;margin:0;min-width:0;width:100%}
+  .hero-copy .eyebrow{font-size:clamp(8px,2.1vw,10px);letter-spacing:.11em;gap:9px;flex-wrap:wrap}
+  .hero-copy .eyebrow-line{flex-shrink:0;width:24px}
+  .hero-heading{font-size:clamp(41px,10.8vw,59px);line-height:1.18;letter-spacing:-.012em;margin:19px 0 17px;max-width:100%;min-width:0;overflow-wrap:normal}
+  .hero-heading>span{white-space:normal}
+  .hero-intro{max-width:100%;font-size:clamp(13px,3.55vw,15px);line-height:1.65;margin:0}
+  .hero-actions{margin:22px 0 0;display:flex;flex-wrap:wrap;gap:12px}
+  .hero-art{order:1;position:relative;width:100%;height:clamp(330px,103vw,490px);min-height:0;margin:30px 0 0;align-self:stretch}
+  .hero-photo-wrap{inset:0 0 8px 0}
+  .hero-floating{right:0;bottom:18px;max-width:63%}
+  .hero-foot{padding-top:40px;padding-bottom:82px;gap:18px}
+  /* The three tabs fit in a single row - no sideways panning required. */
+  .experience-stage{width:calc(100% - 2 * var(--space));min-width:0;max-width:100%;display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
+  .experience-controls{grid-column:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;min-width:0;max-width:100%;gap:7px;overflow:visible;margin:0;padding:0;align-items:stretch}
+  .experience-controls .experience-tab{width:100%;min-width:0;min-height:48px;display:flex;justify-content:center;align-items:center;text-align:center;white-space:nowrap;gap:0;padding:10px 3px;border:1px solid #98b6aa75;border-radius:999px;font:500 clamp(11px,3vw,14px)/1.2 var(--font-body);letter-spacing:-.015em;touch-action:manipulation;user-select:none;-webkit-tap-highlight-color:transparent}
+  .experience-controls .experience-tab>span,.experience-controls .experience-tab>b{display:none}
+  .experience-controls .css-radio:checked+.experience-tab{background:var(--paper);color:var(--forest);border-color:var(--paper);font-weight:750;padding:10px 3px}
+  .experience-controls .experience-tab:hover{padding:10px 3px}
+  .experience-stage:has(#exp-choice-nature:checked) label[for="exp-choice-nature"],.experience-stage:has(#exp-choice-culture:checked) label[for="exp-choice-culture"],.experience-stage:has(#exp-choice-slow:checked) label[for="exp-choice-slow"]{background:var(--paper);color:var(--forest);padding:10px 3px}
+  .experience-stage .exp-panel{grid-column:1;grid-row:2;min-width:0;max-width:100%}
+  .experience-figure{height:clamp(340px,112vw,510px)}
+  .experience-top{max-width:100%}
+  .experience-top .section-title{font-size:clamp(37px,9.4vw,55px);overflow-wrap:break-word}
+  .experience-caption strong{font-size:clamp(29px,8.3vw,39px)}
+  /* Photo lists scroll within their rails, not at document level. */
+  .track-clip,.destination-track,.journey-panels,.journey-rail{min-width:0;max-width:100%}
+  .destination-track,.journey-rail{overscroll-behavior-x:contain}
+}
+@media(max-width:375px){
+  .brand-mark{width:34px;height:34px;font-size:20px}
+  .brand-main{font-size:24px}
+  .hero-heading{font-size:clamp(39px,11vw,43px)}
+  .experience-controls{gap:5px}
+  .experience-controls .experience-tab{font-size:11.5px;letter-spacing:-.03em}
+  .experience-top .section-title{font-size:clamp(34px,9.8vw,40px)}
+}
+/* Decorative halo must never intercept taps on the right-hand tabs. */
+.experience::before,.top-wave{pointer-events:none}
+/* Mid-width tablet: a readable, non-overflowing itinerary instead of two cramped columns. */
+.journey-panels,.journey-variant{min-width:0;max-width:100%}
+.journey-variant .journey-rail{max-width:100%;width:100%;overflow-x:auto}
+@media(min-width:651px) and (max-width:1150px){
+  .journey-layout{grid-template-columns:minmax(0,1fr);gap:25px}
+  .journey-variant .journey-rail{width:100%}
+}
+/* Prevent desktop DevTools width switches from panning the outer document. */
+html,body{overflow-x:hidden}

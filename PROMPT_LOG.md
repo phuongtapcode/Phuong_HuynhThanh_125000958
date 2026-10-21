@@ -97,3 +97,17 @@
 **Thông tin nộp bài:** Họ tên, MSSV và công cụ AI được điền theo thông tin sinh viên trực tiếp cung cấp; lịch sử lời nhắc và kiểm thử được giữ theo các giai đoạn thực tế đã diễn ra.
 
 **Nghiệm thu:** Dùng Chromium/Playwright kiểm tra 13 độ rộng viewport từ 320px đến 2560px. Cả ba thẻ có cùng `border-radius`, cùng chiều cao, cả ba ảnh đều tải được và không có tràn ngang; ở 390px dải ảnh vuốt ngang được; hover không đổi kiểu bo góc. Không ghi nhận lỗi JavaScript trong lượt kiểm thử giả lập. Kết quả không thay thế kiểm thử thiết bị thật hay PageSpeed Insights.
+
+
+### Lần 8 — Sửa layout mobile khi xem trực tiếp và giả lập F12 (21/10/2026)
+
+**Phản hồi sinh viên (nguyên ý):** Trên điện thoại, ba mục “Ngắm cảnh / Phố cổ / Sống chậm” không xếp gọn, thao tác chọn gặp vấn đề; Chrome DevTools giả lập 440×956 làm Hero lệch khỏi khung, muốn xem phải kéo qua lại.
+
+**Nguyên nhân trong CSS:** Dãy Trải nghiệm có `overflow-x:auto`, chiều rộng mở rộng do `margin-right` âm và các label lớn; Hero mobile dùng `display:contents` để tái sắp xếp các phần tử, khó dự đoán hơn khi viewport hoặc mức zoom thay đổi.
+
+**Sửa đổi:** Chuyển ba lựa chọn thành lưới 3 cột vừa khít chiều rộng điện thoại, các input radio HTML giữ cơ chế chọn và CSS `:checked`/`:has()` đổi nội dung. Hero trên mobile dùng một khối nội dung bình thường, sau đó tới ảnh, thay vì sắp xếp con qua `display:contents`. Các thành phần bị giới hạn theo chiều rộng vùng hiển thị, ảnh và chữ dùng kích thước responsive. Không tạo `script.js`.
+
+**Kiểm thử thực tế trong Chromium/Playwright:** Đã thử thao tác chạm lần lượt Phố cổ → Sống chậm → Ngắm cảnh ở 320, 375, 390, 440 và 650px: từng radio được chọn và đúng ảnh nội dung hiển thị, không còn lớp nền chặn cảm ứng. Kiểm tra 23 độ rộng viewport từ 320 đến 2560px, đợi browser cập nhật layout sau mỗi lần đổi kích thước F12: không ghi nhận tràn ngang toàn trang, headline và thanh điều hướng đều nằm trong khung. Kiểm thử desktop → 440px cũng giữ bố cục đúng. Đây là kiểm thử Chromium giả lập, không thay thế Safari iOS/Chrome Android thật hoặc kết quả PageSpeed Insights.
+
+
+**Phát hiện bổ sung:** Ánh sáng trang trí `.experience::before` có kích thước lớn và đang bắt sự kiện chuột/cảm ứng phía bên phải. Thêm `pointer-events:none` cho lớp trang trí để cả ba nhãn radio có thể thao tác trực tiếp. Đối với tablet, bố cục lịch trình được chuyển sang 1 cột ở vùng 651–1150px để tránh chật nội dung.
